@@ -1,0 +1,12 @@
+INDEX_LMS.HTML && STORY.HTML
+  <script type="text/javascript" src="xapiwrapper.min.js"></script>
+  <script type="text/javascript" src="storyline.js"></script>
+  <script type="text/javascript" src="openaiConnection.js"></script>
+  <script type="text/javascript" src="semanticSimilarity.js"></script>
+
+
+IMSMANIFEST.XML
+      <file href="xapiwrapper.min.js" />
+      <file href="storyline.js" />
+      <file href="openaiConnection.js" />      
+      <file href="semanticSimilarity.js" />
