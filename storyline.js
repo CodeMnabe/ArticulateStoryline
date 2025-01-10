@@ -8,6 +8,8 @@ function getGlobalPlayer() {
   return window.player;
 }
 
+window.getGlobalPlayer = getGlobalPlayer;
+
 function getVar(_var) {
   if (!window.player) {
     getGlobalPlayer();
@@ -15,6 +17,8 @@ function getVar(_var) {
 
   return player.GetVar(_var);
 }
+
+window.getVar = getVar;
 
 function setVar(_var, value) {
   if (!window.player) {
