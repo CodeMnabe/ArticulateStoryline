@@ -1,3 +1,12 @@
+/**
+ * Retrieves or creates a global player instance.
+ *
+ * This function checks if a global player instance already exists in the window object.
+ * If it does, it returns the existing instance. If not, it creates a new player instance
+ * using the GetPlayer() function and assigns it to the window object before returning it.
+ *
+ * @returns {Object} The global player instance.
+ */
 function getGlobalPlayer() {
   if (window.player) {
     console.log("Player already exists");
@@ -10,6 +19,15 @@ function getGlobalPlayer() {
 
 window.getGlobalPlayer = getGlobalPlayer;
 
+/**
+ * Retrieves the value of a variable from the global player instance.
+ *
+ * This function checks if the global player instance exists, creates it if necessary,
+ * and then retrieves the value of the specified variable using the player's GetVar method.
+ *
+ * @param {string} _var - The name of the variable to retrieve from the player.
+ * @returns {*} The value of the specified variable. The type depends on what's stored in the variable.
+ */
 function getVar(_var) {
   if (!window.player) {
     getGlobalPlayer();
@@ -20,6 +38,17 @@ function getVar(_var) {
 
 window.getVar = getVar;
 
+/**
+ * Sets the value of a variable in the global player instance.
+ *
+ * This function checks if the global player instance exists, creates it if necessary,
+ * and then sets the value of the specified variable using the player's SetVar method.
+ * It also validates that the variable name is a string.
+ *
+ * @param {string} _var - The name of the variable to set in the player.
+ * @param {*} value - The value to assign to the variable. Can be of any type.
+ * @returns {*} The result of the SetVar operation, or an empty string if the variable name is invalid.
+ */
 function setVar(_var, value) {
   if (!window.player) {
     getGlobalPlayer();
@@ -33,6 +62,17 @@ function setVar(_var, value) {
   return player.SetVar(_var, value);
 }
 
+/**
+ * Sets the user ID and name in the global player instance.
+ *
+ * This function attempts to retrieve the student ID and name using SCORM functions
+ * if available. If not, it uses default values. It then sets these values in the
+ * global player instance if they are different from the current values.
+ *
+ * @returns {Object} An object containing the user ID and name.
+ * @property {string} userID - The user's ID, either from SCORM or default "0".
+ * @property {string} name - The user's name, formatted as "FirstName LastName" or "N/A".
+ */
 function setUserIDAndName() {
   const _userID = typeof GetStudentID === "function" ? GetStudentID() : "0";
 
@@ -49,36 +89,6 @@ function setUserIDAndName() {
   setVar("name", _name);
 
   return { userID: _userID, name: _name };
-}
-
-function setLRSConfig(endpoint, username, password) {
-  const conf = {
-    endpoint: endpoint,
-    auth: "Basic " + btoa(`${username}:${password}`),
-  };
-
-  ADL.XAPIWrapper.changeConfig(conf);
-
-  return true;
-}
-
-async function setHomePage(homePage) {
-  try {
-    const _homePage = homePage
-      ? homePage
-      : new URL(window.location.href).origin;
-
-    //TODO: Adicionar lógica para aparecer uma caixa caso não ser apresentado um URL ou se não conseguir encontrar nenhum Sub Domain
-    if (!_homePage) {
-      return false;
-    }
-
-    setVar("homePage", _homePage);
-    return true;
-  } catch (error) {
-    console.error("Error setting homePage:", error);
-    return false;
-  }
 }
 
 function getSubdomainFromCurrentPage() {
@@ -133,6 +143,36 @@ function queryCompleted(id, homePage, courseURI) {
 //#endregion
 
 //#region Send To LRS
+
+function setLRSConfig(endpoint, username, password) {
+  const conf = {
+    endpoint: endpoint,
+    auth: "Basic " + btoa(`${username}:${password}`),
+  };
+
+  ADL.XAPIWrapper.changeConfig(conf);
+
+  return true;
+}
+
+async function setHomePage(homePage) {
+  try {
+    const _homePage = homePage
+      ? homePage
+      : new URL(window.location.href).origin;
+
+    //TODO: Adicionar lógica para aparecer uma caixa caso não ser apresentado um URL ou se não conseguir encontrar nenhum Sub Domain
+    if (!_homePage) {
+      return false;
+    }
+
+    setVar("homePage", _homePage);
+    return true;
+  } catch (error) {
+    console.error("Error setting homePage:", error);
+    return false;
+  }
+}
 
 function sendCompleted(name, id, homePage, objectId, object) {
   const data = queryCompleted(id, homePage, objectId);

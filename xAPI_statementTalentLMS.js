@@ -1,9 +1,13 @@
-const conf = {
-  endpoint: "https://gasparalves-test.lrs.io/xapi/",
-  auth: "Basic " + btoa("sizfut:idsene"),
-};
+async function setLRSConfig() {
+  const conf = {
+    endpoint: "https://gasparalves-test.lrs.io/xapi/",
+    auth: "Basic " + btoa("sizfut:idsene"),
+  };
 
-ADL.XAPIWrapper.changeConfig(conf);
+  ADL.XAPIWrapper.changeConfig(conf);
+  console.log("LRS config changed");
+  return true;
+}
 
 async function sendViewed(name, id, homePage, objectId, object, objectType) {
   objectType = objectType.toLowerCase();
@@ -48,7 +52,7 @@ async function sendViewed(name, id, homePage, objectId, object, objectType) {
   return false;
 }
 
-function sendCompleted(name, id, homePage, objectId, object) {
+async function sendCompleted(name, id, homePage, objectId, object) {
   const statement = {
     actor: {
       name: name,
@@ -82,7 +86,7 @@ function sendCompleted(name, id, homePage, objectId, object) {
   return false;
 }
 
-function sendClicked(name, id, homePage, objectId, object, response) {
+async function sendClicked(name, id, homePage, objectId, object, response) {
   const statement = {
     actor: {
       name: name,
@@ -106,7 +110,7 @@ function sendClicked(name, id, homePage, objectId, object, response) {
       objectType: "Activity",
     },
     result: {
-      response: response,
+      response: String(response),
     },
   };
 
@@ -119,11 +123,12 @@ function sendClicked(name, id, homePage, objectId, object, response) {
     }
   } catch (err) {
     console.error("Error sending statement:", err);
+    return false;
   }
   return false;
 }
 
-function sendAnsweredQuestionnaire(
+async function sendAnsweredQuestionnaire(
   name, //Nome da pessoa que está a fazer o curso
   id, //ID da pessoa que está a fazer o curso
   homePage, //Homepage onde o curso está alojado para se poder identificar que utilizador está a ser passado
