@@ -1,4 +1,4 @@
-function queryData(id, homePage) {
+async function queryData(id, homePage) {
   const parameters = ADL.XAPIWrapper.searchParams();
 
   parameters["agent"] = JSON.stringify({
@@ -29,7 +29,7 @@ function queryData(id, homePage) {
 }
 
 //homePage is the base URL where the course is located.
-function queryCompleted(id, homePage, courseID) {
+async function queryCompleted(id, homePage, courseID) {
   const parameters = ADL.XAPIWrapper.searchParams();
 
   parameters["agent"] = JSON.stringify({

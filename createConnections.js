@@ -19,7 +19,7 @@ function createConnections(scripts, index = 0) {
   script.src = source;
   script.type = "text/javascript";
   script.onload = function () {
-    console.log(`${source} loaded from localhost.`);
+    console.log(`Script loaded successfully.`);
     invokeFunctions(functions);
     createConnections(scripts, index + 1);
   };

@@ -91,21 +91,42 @@ function setUserIDAndName() {
   return { userID: _userID, name: _name };
 }
 
+/**
+ * Extracts the subdomain from the current page's URL.
+ *
+ * This function analyzes the hostname of the current page's URL to determine
+ * the subdomain. It handles standard subdomains and deeper subdomain structures.
+ *
+ * @returns {string|null} The subdomain if detected, otherwise null if no subdomain is present.
+ */
 function getSubdomainFromCurrentPage() {
-  const urlObject = new URL(window.location.href); // Get the current page URL
-  const parts = urlObject.hostname.split("."); // Split the hostname into parts
+  const urlObject = new URL(window.location.href);
+  const parts = urlObject.hostname.split(".");
 
-  // Handle different cases based on URL patterns
   if (parts.length === 3) {
-    return parts[0]; // Standard subdomain, e.g., "digikacademy" in "digikacademy.talentlms.com"
+    return parts[0];
   } else if (parts.length > 3) {
-    return parts.slice(0, parts.length - 2).join("."); // Handle deeper subdomains, if any
+    return parts.slice(0, parts.length - 2).join(".");
   }
-  return null; // No subdomain detected
+  return null;
 }
 
 //#region Queries
 
+/**
+ * Queries the completion status of a course for a specific user.
+ *
+ * This function constructs a query to check if a user has completed a course
+ * by searching for statements in the xAPI Wrapper that match the given user ID,
+ * home page, and course URI.
+ *
+ * @param {string} id - The unique identifier of the user.
+ * @param {string} homePage - The home page URL associated with the user's account.
+ * @param {string} courseURI - The URI of the course to check for completion.
+ * @returns {Object} An object containing the response and status.
+ * @property {Object} response - The response from the xAPI Wrapper containing statements.
+ * @property {boolean} status - True if a matching completion statement is found, otherwise false.
+ */
 function queryCompleted(id, homePage, courseURI) {
   const parameters = ADL.XAPIWrapper.searchParams();
 
@@ -144,6 +165,17 @@ function queryCompleted(id, homePage, courseURI) {
 
 //#region Send To LRS
 
+/**
+ * Configures the Learning Record Store (LRS) with the specified endpoint and credentials.
+ *
+ * This function sets up the LRS configuration by specifying the endpoint URL and
+ * authentication credentials, which are encoded in Base64 format.
+ *
+ * @param {string} endpoint - The URL of the LRS endpoint to connect to.
+ * @param {string} username - The username for authenticating with the LRS.
+ * @param {string} password - The password for authenticating with the LRS.
+ * @returns {boolean} Returns true if the configuration is successfully set.
+ */
 function setLRSConfig(endpoint, username, password) {
   const conf = {
     endpoint: endpoint,
@@ -155,6 +187,16 @@ function setLRSConfig(endpoint, username, password) {
   return true;
 }
 
+/**
+ * Sets the home page URL in the global player instance.
+ *
+ * This function attempts to set the home page URL based on the provided parameter.
+ * If no URL is provided, it defaults to the origin of the current page's URL.
+ * The function updates the global player instance with the determined home page URL.
+ *
+ * @param {string} homePage - The URL to set as the home page. If not provided, defaults to the current page's origin.
+ * @returns {Promise<boolean>} Returns true if the home page is successfully set, otherwise false if an error occurs.
+ */
 async function setHomePage(homePage) {
   try {
     const _homePage = homePage
@@ -233,6 +275,14 @@ function compareText(text, keywords) {
   return results === 0 ? false : { results: results, elements: elements }; // Return false if none found, otherwise return the count
 }
 
+/**
+ * Calculates the final score based on open and multiple choice question results.
+ * The function retrieves the number of open and multiple choice questions for each category,
+ * calculates the maximum possible score, retrieves the actual scores, extracts the multiple choice percentage,
+ * and calculates the final weighted percentage.
+ *
+ * @returns {void}
+ */
 function calculateFinalResult() {
   const numBasicOpenQuestions = getVar("openBasicQuestions"); //Between 0 and 10;
   const numAdvOpenQuestions = getVar("openAdvancedQuestions"); //Between 0 and 10;
