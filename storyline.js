@@ -77,7 +77,12 @@ function setUserIDAndName() {
   const _name = scormName ? scormName.split(",").reverse().join(" ") : "N/A";
 
   if (getVar("name") !== _name || getVar("userID") !== _userID) {
-    console.log("userID and name are already set");
+    console.log(
+      "userID and name are already set " +
+        getVar("userID") +
+        " and " +
+        getVar("user")
+    );
     return { userID: getVar("userID"), name: getVar("name") };
   }
 
