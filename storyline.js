@@ -17,8 +17,6 @@ function getGlobalPlayer() {
   return window.player;
 }
 
-window.getGlobalPlayer = getGlobalPlayer;
-
 /**
  * Retrieves the value of a variable from the global player instance.
  *
@@ -35,8 +33,6 @@ function getVar(_var) {
 
   return player.GetVar(_var);
 }
-
-window.getVar = getVar;
 
 /**
  * Sets the value of a variable in the global player instance.
