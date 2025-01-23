@@ -442,6 +442,7 @@ async function talkToChat(question, keywords, feedback, messageData) {
       console.error("No valid response from GPT");
     }
   } catch (err) {
+    console.alert("Ocorreu um erro por favor tente novamente mais tarde.");
     console.error("Error calling GPT: ", err);
   }
 }
