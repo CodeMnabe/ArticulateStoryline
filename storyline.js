@@ -76,7 +76,7 @@ function setUserIDAndName() {
     typeof GetStudentName === "function" ? GetStudentName() : "User,Test";
   const _name = scormName ? scormName.split(",").reverse().join(" ") : "N/A";
 
-  if (getVar("name") !== _name || getVar("userID") !== _userID) {
+  if (getVar("name") === _name || getVar("userID") === _userID) {
     console.log(
       "userID and name are already set " +
         getVar("userID") +

@@ -1,6 +1,5 @@
 function createConnections(scripts, index = 0) {
   if (index >= scripts.length) {
-    console.log("All scripts loaded.");
     return;
   }
 
@@ -9,7 +8,6 @@ function createConnections(scripts, index = 0) {
   let script = document.querySelector(`script[src="${source}"]`);
 
   if (script) {
-    console.log(`${source} already exists`);
     invokeFunctions(functions);
     createConnections(scripts, index + 1);
     return;
@@ -19,7 +17,6 @@ function createConnections(scripts, index = 0) {
   script.src = source;
   script.type = "text/javascript";
   script.onload = function () {
-    console.log(`Script loaded successfully.`);
     invokeFunctions(functions);
     createConnections(scripts, index + 1);
   };
@@ -32,7 +29,6 @@ function createConnections(scripts, index = 0) {
 
 function invokeFunctions(functions) {
   if (!Array.isArray(functions) || functions.length === 0) {
-    console.log("No functions to invoke.");
     return;
   }
 

@@ -107,17 +107,3 @@ async function evaluateKeywordScore(keywords, fullMarks, maxScore) {
   setVar("isIncorrect", true);
   return;
 }
-
-/*KEEP THIS
-const keywords = [
-  "Emissões nulas",
-  "Eficiência energética",
-  "Custos operacionais reduzidos",
-  "eletricidade",
-  "manutenção",
-  "estacionamento",
-];
-
-textToCompareKeywords(keywords, 3, 6);
-
-*/
