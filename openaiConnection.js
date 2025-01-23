@@ -397,6 +397,7 @@ async function talkToChat(question, keywords, feedback, messageData) {
     "Content-Type": "application/json",
     Authorization: `Bearer ${getVar("token")}`,
   };
+  console.log(keywords);
 
   const body = JSON.stringify({
     model: "gpt-4",
