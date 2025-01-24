@@ -84,7 +84,7 @@ function setUserIDAndName() {
       "userID and name are already set " +
         getVar("userID") +
         " and " +
-        getVar("user")
+        getVar("name")
     );
     return { userID: getVar("userID"), name: getVar("name") };
   }
