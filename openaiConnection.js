@@ -90,6 +90,12 @@ async function seeMessage(threadId) {
 }
 
 function showQuestions(text) {
+  if (text.match(/Resumo Final/)) {
+    const cleanText = text.replace(/\*\*/g, "");
+    setVar("resultsText", cleanText);
+    setVar("showResults", true);
+  }
+
   const score =
     text.match(/Pontuação:\s*(\d+)%|Pontuação:\s*(\d+)%/)?.[1]?.trim() || "N/A";
 
@@ -124,6 +130,12 @@ function showQuestions(text) {
   console.log("Question: " + question);
 
   const num = questionNum.match(/[0-9]/)[0];
+
+  if (num == 3) {
+    setVar("showResults", true);
+    console.log(getVar("showResults"));
+  }
+
   if (Number(num) <= 1) {
     setVar("showFeedback", false);
     setVar("answerA", options[0]);
