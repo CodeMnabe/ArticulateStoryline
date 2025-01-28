@@ -273,13 +273,17 @@ async function getNumber(text) {
   }
 }
 
-async function showData(message, type) {
+async function showData(message, type, textContainer) {
   let text = message.data[0].content[0].text.value;
   console.log(message.data[0]);
 
   switch (type) {
     case "normal":
       const cleanText = text.replace(/\*\*/g, "");
+      if (textContainer !== "aiResponse") {
+        setVar(textContainer, cleanText);
+        return;
+      }
       setVar("aiResponse", cleanText);
       return true;
       break;
