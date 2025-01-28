@@ -49,9 +49,9 @@ function setVar(_var, value) {
   if (!window.player) {
     getGlobalPlayer();
   }
-
+  console.log();
   if (typeof _var !== "string") {
-    console.alert("_var must be a string");
+    alert("_var must be a string");
     return "";
   }
 

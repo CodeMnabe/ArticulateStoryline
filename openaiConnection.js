@@ -99,19 +99,19 @@ function showQuestions(text) {
     player.SetVar("rightWrong", "Incorreto");
   }
 
-  const question = text.match(/Pergunta \d+\/10:? * *(.*)/)?.[1]?.trim();
+  const question = text.match(/Pergunta \d+\/3:? * *(.*)/)?.[1]?.trim();
 
   const options = text
     .match(/^(a|b|c|d)\) .*$/gm)
     ?.map((option) => option.replace(/^(a|b|c|d)\)\s*/, "").trim());
 
-  const questionNum = text.match(/(Pergunta (\d+\/10):)/)?.[1].trim();
+  const questionNum = text.match(/(Pergunta (\d+\/3):)/)?.[1].trim();
 
   const remainingText = text
     .replace(/Pontuação:\s*(\d+)%|Pontuação:\s*(\d+)%/, "")
     .replace(/Justificação:|Justificação\s*/g, "")
     .replace(/Sugestão de Melhoria:|Sugestão de Melhoria:\s*/g, "")
-    .replace(/Pergunta \d+\/10:? * *(.*)/gs, "")
+    .replace(/Pergunta \d+\/3:? * *(.*)/gs, "")
     .replace(/^(a|b|c|d)\) .*$/gm, "")
     .replace(/(.*?)/gs, "$1")
     .replace(/\n{2,}/g, "\n")
@@ -165,9 +165,7 @@ function showTextQuestions(text) {
     player.SetVar("rightWrong", "Incorreto");
   }
 
-  const question = text
-    .match(/\*\*Pergunta \d+\/10:? *\*\* *(.*)/)?.[1]
-    ?.trim();
+  const question = text.match(/\*\*Pergunta \d+\/3:? *\*\* *(.*)/)?.[1]?.trim();
 
   const options = text
     .match(/^(a|b|c|d)\) .*$/gm)
@@ -176,13 +174,13 @@ function showTextQuestions(text) {
   if (options) {
     const optionsList = `a)${options[0]}\nb)${options[1]}\nc)${options[2]}`;
   }
-  const questionNum = text.match(/\*\*(Pergunta (\d+\/10):)\*\*/)?.[1].trim();
+  const questionNum = text.match(/\*\*(Pergunta (\d+\/3):)\*\*/)?.[1].trim();
 
   const remainingText = text
     .replace(/\*\*Pontuação:\*\*\s*(\d+)%|Pontuação:\s*(\d+)%/, "")
     .replace(/\*\*Justificação:\*\*|Justificação\s*/g, "")
     .replace(/\*\*Sugestão de Melhoria:\*\*|Sugestão de Melhoria:\s*/g, "")
-    .replace(/\*\*Pergunta \d+\/10:? *\*\* *(.*)/gs, "")
+    .replace(/\*\*Pergunta \d+\/3:? *\*\* *(.*)/gs, "")
     .replace(/^(a|b|c|d)\) .*$/gm, "")
     .replace(/\*\*(.*?)\*\*/gs, "$1")
     .replace(/\n{2,}/g, "\n")
@@ -277,7 +275,7 @@ async function showData(message, type, textContainer) {
     case "normal":
       const cleanText = text.replace(/\*\*/g, "");
       if (textContainer !== "aiResponse") {
-        setVar(textContainer, cleanText);
+        setVar(textContainer, String(cleanText));
         return true;
       }
       setVar("aiResponse", cleanText);
@@ -332,7 +330,12 @@ async function pollStatus(threadID, runId) {
   });
 }
 
-async function chat(outputType, inputType, message) {
+async function chat(
+  outputType,
+  inputType,
+  message,
+  textContainer = "aiResponse"
+) {
   try {
     let _threadId = getVar("threadID");
 
@@ -381,7 +384,7 @@ async function chat(outputType, inputType, message) {
 
     if (pollResult) {
       const messageData = await seeMessage(_threadId);
-      const result = await showData(messageData, outputType);
+      const result = await showData(messageData, outputType, textContainer);
       showLoading(false);
       return result;
     }
