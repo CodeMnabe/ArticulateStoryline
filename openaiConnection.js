@@ -91,9 +91,7 @@ async function seeMessage(threadId) {
 
 function showQuestions(text) {
   const score =
-    text
-      .match(/\*\*Pontuação:\*\*\s*(\d+)%|Pontuação:\s*(\d+)%/)?.[1]
-      ?.trim() || "N/A";
+    text.match(/Pontuação:\s*(\d+)%|Pontuação:\s*(\d+)%/)?.[1]?.trim() || "N/A";
 
   if (score == 100) {
     player.SetVar("rightWrong", "Correto");
@@ -101,23 +99,21 @@ function showQuestions(text) {
     player.SetVar("rightWrong", "Incorreto");
   }
 
-  const question = text
-    .match(/\*\*Pergunta \d+\/10:? *\*\* *(.*)/)?.[1]
-    ?.trim();
+  const question = text.match(/Pergunta \d+\/10:? * *(.*)/)?.[1]?.trim();
 
   const options = text
     .match(/^(a|b|c|d)\) .*$/gm)
     ?.map((option) => option.replace(/^(a|b|c|d)\)\s*/, "").trim());
 
-  const questionNum = text.match(/\*\*(Pergunta (\d+\/10):)\*\*/)?.[1].trim();
+  const questionNum = text.match(/(Pergunta (\d+\/10):)/)?.[1].trim();
 
   const remainingText = text
-    .replace(/\*\*Pontuação:\*\*\s*(\d+)%|Pontuação:\s*(\d+)%/, "")
-    .replace(/\*\*Justificação:\*\*|Justificação\s*/g, "")
-    .replace(/\*\*Sugestão de Melhoria:\*\*|Sugestão de Melhoria:\s*/g, "")
-    .replace(/\*\*Pergunta \d+\/10:? *\*\* *(.*)/gs, "")
+    .replace(/Pontuação:\s*(\d+)%|Pontuação:\s*(\d+)%/, "")
+    .replace(/Justificação:|Justificação\s*/g, "")
+    .replace(/Sugestão de Melhoria:|Sugestão de Melhoria:\s*/g, "")
+    .replace(/Pergunta \d+\/10:? * *(.*)/gs, "")
     .replace(/^(a|b|c|d)\) .*$/gm, "")
-    .replace(/\*\*(.*?)\*\*/gs, "$1")
+    .replace(/(.*?)/gs, "$1")
     .replace(/\n{2,}/g, "\n")
     .replace(/undefined/, "")
     .trim();
