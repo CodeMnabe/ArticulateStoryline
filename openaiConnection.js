@@ -282,7 +282,7 @@ async function showData(message, type, textContainer) {
       const cleanText = text.replace(/\*\*/g, "");
       if (textContainer !== "aiResponse") {
         setVar(textContainer, cleanText);
-        return;
+        return true;
       }
       setVar("aiResponse", cleanText);
       return true;
